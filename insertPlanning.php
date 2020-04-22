@@ -1,5 +1,5 @@
 <?php
-	include 'php/databaseConfigAdministrator.php';
+	include 'php/databaseConnectionAdmin.php';
 
 	$successAdd = $successAdd_err = "";
 
@@ -34,6 +34,8 @@
 		<link rel="stylesheet" href="css/stylish-portfolio.min.css">
 		<link rel="stylesheet" href="css/fi/css/feathericon.css">
 		
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+		
 		<!-- website attributen -->
 		<title>Planning toevoegen</title>
 	</head>
@@ -54,7 +56,7 @@
 			<div class="sidebar-sticky">
 				<ul class="nav flex-column">
 					<li class="nav-item">
-						<a class="nav-link" href="addGameToDatabase.php">
+						<a class="nav-link" href="addGuideToDatabase.php">
 						<i class="feather fe fe-gamepad"></i>
 						Voeg game toe</a>
 					</li>
@@ -103,58 +105,58 @@
 				</ul>
 			</div>
 		</nav>
-
-		<div class="container-fluid">
-			<div class="row">
-				<!-- Sidebar -->
-
-		<form method="post">
-			<div class="form-row centered">
-				<div class="form-group col-sm-12 col-md-6">
-					<label>Selecteer Spel</label>
-					<select class="form-control" name="selectGame">
-						<?php 
-							$viewGameName = "select name from games";
-							$stm = $pdo->prepare($viewGameName);
-							$stm->execute();
-							if($stm->execute()){
-								$viewGameName = $stm->fetchAll(PDO::FETCH_OBJ);
-								foreach ($viewGameName as $viewGameName){ ?>
-						<option><?php echo $viewGameName->name; ?></option>
-						<?php }} ?>
-					</select>
-				</div>
-				
-				<div class="form-group col-sm-4 col-md-2">
-					<label>Start tijd</label>
-					<input class="form-control" type="time" name="selectStartTime" />
-				</div>
-				
-				<div class="form-group col-sm-8 col-md-2">
-					<label>Gids</label>
-					<select class="form-control" name="selectGuide">
-						<?php 
-							$viewGuideName = "select name from guide";
-							$stm = $pdo->prepare($viewGuideName);
-							$stm->execute();
-							if($stm->execute()){
-								$viewGuideName = $stm->fetchAll(PDO::FETCH_OBJ);
-								foreach ($viewGuideName as $viewGuideName){ ?>
-						<option><?php echo $viewGuideName->name; ?></option>
-						<?php }} ?>
-					</select>
-				</div>
 		
-				<div class="form-group col-md-2">
-					<label>Spelers</label>
-					<input class="form-control" type="text" name="selectPlayers">
-				</div>
-				
-				<div class="form-group col-md-1">
-					<input class="btn btn-outline-dark" type="submit" name="insertPlanning"></button>
-				</div>
-				<?= $successAdd, $successAdd_err; ?>
+		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+			<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+				<h1 class="h2">Gids toevoegen aan database</h1>
 			</div>
-		</form>
+				<form method="post">
+					<div class="form-row centered">
+						<div class="form-group col-sm-12 col-md-6">
+							<label>Selecteer Spel</label>
+							<select class="form-control" name="selectGame">
+								<?php 
+									$viewGameName = "select name from games";
+									$stm = $pdo->prepare($viewGameName);
+									$stm->execute();
+									if($stm->execute()){
+										$viewGameName = $stm->fetchAll(PDO::FETCH_OBJ);
+										foreach ($viewGameName as $viewGameName){ ?>
+								<option><?php echo $viewGameName->name; ?></option>
+								<?php }} ?>
+							</select>
+						</div>
+
+						<div class="form-group col-sm-4 col-md-2">
+							<label>Start tijd</label>
+							<input class="form-control" type="time" name="selectStartTime" />
+						</div>
+
+						<div class="form-group col-sm-8 col-md-2">
+							<label>Gids</label>
+							<select class="form-control" name="selectGuide">
+								<?php 
+									$viewGuideName = "select fullname from guide";
+									$stm = $pdo->prepare($viewGuideName);
+									$stm->execute();
+									if($stm->execute()){
+										$viewGuideName = $stm->fetchAll(PDO::FETCH_OBJ);
+										foreach ($viewGuideName as $viewGuideName){ ?>
+								<option><?php echo $viewGuideName->fullname; ?></option>
+								<?php }} ?>
+							</select>
+						</div>
+
+						<div class="form-group col-md-2">
+							<label>Spelers</label>
+							<input class="form-control" type="text" name="selectPlayers">
+						</div>
+
+						<div class="form-group col-md-1">
+							<input class="btn btn-outline-dark" type="submit" name="insertPlanning"></button>
+						</div>
+						<?= $successAdd, $successAdd_err; ?>
+					</div>
+				</form>
 	</body>
 </html>

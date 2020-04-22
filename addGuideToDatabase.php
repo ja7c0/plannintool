@@ -1,19 +1,17 @@
 <?php
-	include 'php/databaseConfigAdministrator.php';
+	include 'php/databaseConnectionAdmin.php';
 
 	$successAdd = $successAdd_err = "";
 
-	if(isset($_POST['addGuide'])){
-		$selectGame = $_POST['selectGame'];
-		$selectGuide = $_POST['selectGuide'];
-		$selectStartTime = $_POST['selectStartTime'];
-		$selectPlayers = $_POST['selectPlayers'];
+	if(isset($_POST['insertGuide'])){
+		$fullname = $_POST['insertFullName'];
+		$sex = $_POST['insertSex'];
 
-		$query = "INSERT INTO planning (game, time, guide, players) VALUES ('$selectGame', '$selectGuide', '$selectStartTime', '$selectPlayers')";
+		$query = "INSERT INTO guide (fullname, sex) VALUES ('$fullname', '$sex')";
 
 		$statement = $pdo->prepare($query);
 		if($statement->execute()){
-			$successAdd = "<p class='w-responsive mx-auto mb-5 font-weight-bold text-center text-success'>Artiest is toegevoegd!</p>";
+			$successAdd = "<p class='w-responsive mx-auto mb-5 font-weight-bold text-center text-success'>Gids is toegevoegd!</p>";
 		}
 		else {
 			$successAdd_err = "<p class='w-responsive mx-auto mb-5 font-weight-bold text-center text-danger'>Er is iets niet goed gegaan, probeer het opnieuw!</p>";
@@ -34,8 +32,10 @@
 		<link rel="stylesheet" href="css/stylish-portfolio.min.css">
 		<link rel="stylesheet" href="css/feathericon/css/feathericon.css">
 		
+		<link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css">
+		
 		<!-- website attributen -->
-		<title>Planning toevoegen</title>
+		<title>Gids toevoegen</title>
 	</head>
 	
 	<body>
@@ -103,86 +103,73 @@
 				</ul>
 			</div>
 		</nav>
-
-		<div class="container-fluid">
-			<div class="row">
-				<!-- Sidebar -->
-
-		<form method="post">
-			<div class="form-row centered">
-				<div class="form-group col-sm-12 col-md-6">
-					<label>Spelnaam</label>
-					<input class="form-control form-control-sm" type="text" name="insertName">
-				</div>
-				
-				<div class="form-group col-sm-12 col-md-6">
-					<label>Image</label>
-					<input class="form-control form-control-sm" type="text" name="insertImage">
-				</div>
-				
-				<div class="form-group col-sm-12 col-md-6">
-					<label>Description</label>
-					<input class="form-control form-control0sm" type="text" name="insertDescription">
-				</div>
-				
-				<div class="form-group col-sm-12 col-md-6">
-					<label></label>
-					<input class="form-control form-control0sm" type="text" name="insertExpansions">
-				</div>
-				
-				<div class="form-group col-sm-12 col-md-6">
-					<label></label>
-					<input class="form-control form-control0sm" type="text" name="insertSkills">
-				</div>
-				
-				<div class="form-group col-sm-12 col-md-6">
-					<label></label>
-					<input class="form-control form-control0sm" type="text" name="insertUrl">
-				</div>
-				
-				<div class="form-group col-sm-12 col-md-6">
-					<label></label>
-					<input class="form-control form-control0sm" type="text" name="insertYoutubeiFrame">
-				</div>
-				
-				<div class="form-group col-sm-12 col-md-6">
-					<label></label>
-					<select class="form-control form-control0sm" type="text" name="insertMinPlayers">
-						<option>1</option>
-						<option>2</option>
-						<option>3</option>
-						<option>4</option>
-						<option>5</option>
-						<option>6</option>
-						<option>7</option>
-						<option>8</option>
-						<option>9</option>
-						<option>10</option>
-						<option>11</option>
-						<option>12</option>
-						<option>13</option>
-						<option>14</option>
-						<option>15</option>
-						<option>16</option>
-						<option>17</option>
-						<option>18</option>
-						<option>19</option>
-						<option>20</option>
-						<option>21</option>
-						<option>22</option>
-						<option>23</option>
-						<option>24</option>
-						<option>25</option>
-					</select>
-				</div>
-				
-				
-				
-				<div class="form-group col-md-12">
-					<button class="btn btn-outline-dark" type="submit" name="insertGame">Send it!</button>
-				</div>
-				<?= $successAdd, $successAdd_err; ?>
+		
+		<main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+			<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+				<h1 class="h2">Gids toevoegen aan database</h1>
 			</div>
-		</form>
+			
+			<section class="mb-4">
+				<form method="post">
+					<div class="form-row">
+						<div class="form-group col-sm-12 col-md-7">
+							<label>Voor- en Achternaam</label>
+							<input class="form-control" type="text" name="insertFullName" maxlength="50" />
+						</div>
+
+						<div class="form-group col-sm-12 col-md-5">
+							<label>Geslacht</label>
+							<select class="form-control" type="text" name="insertSex"/>
+								<option value="male">Man</option>
+								<option value="female">Vrouw</option>
+							</select>
+						</div>
+					</div>
+
+					<div class="form-row justify-content-center">
+						<div class="form-group col-md-12">
+							<button class="btn btn-outline-dark" type="submit" name="insertGuide">Send it!</button>
+						</div>
+						<?php echo $successAdd ?> <?php echo $successAdd_err; ?>
+					</div>
+				</form>
+			</section>
+					
+			<h1 class="h2">Accounts</h1>
+			<div class="table-responsive">
+				<table style="table-layout: inherit" class="table table-striped table-sm">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Voornaam</th>
+							<th>Geslacht</th>
+							<th>Aangemaakt op</th>
+							<th class="text-right">Bewerk</th>
+							<th class="text-right">Verwijder</th>
+						</tr>
+					</thead>
+					<tbody>
+						<?php
+							$sGuide = "select * from guide";
+							$stm = $pdo->prepare($sGuide);
+							$stm->execute();
+							if($stm->execute()){
+							$sGuide = $stm->fetchAll(PDO::FETCH_OBJ);
+								foreach ($sGuide as $sGuide){
+									echo "<tr>";
+									echo "<td>$sGuide->id</td>";
+									echo "<td>$sGuide->fullname</td>";
+									echo "<td>$sGuide->sex</td>";
+									echo "<td>$sGuide->created_at</td>";
+									echo "<td class='text-right'><a href='php/editSelectedGuide.php?edit=$sGuide->id'><i class='feather fe fe-pencil'></i></a></td>";
+									echo "<td class='text-right'><a href='php/deleteSelectedGuide.php?del=$sGuide->id'><i class='feather fe fe-trash'></i></a></td>";
+									echo "</tr>";
+								}
+							}
+						?>
+					</tbody>
+				</table>
+			</div>
+		</main>
 	</body>
 </html>
